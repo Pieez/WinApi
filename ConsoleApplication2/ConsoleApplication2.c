@@ -5,7 +5,14 @@
 #define SIZE_BUFFER 260
 #define PATH L"C:/TestAPI/text.txt"
 
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdshow) {
+INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdshow) {
+
+	int bool = 0;
+	int counter = 0;
+	int counter_spase = 0;
+	float a, b, c;
+
+
 
 	
 	HANDLE hFile = CreateFile(PATH,
@@ -14,9 +21,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 		NULL,
 		OPEN_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL,
-		NULL
-
-	);
+		NULL);
 		
 	
 	OVERLAPPED olf = { 0 };
@@ -47,11 +52,58 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 
 	CloseHandle(hFile);
 	return 0;
+
+	QuaEquation(a, b, c);
 }
 
-void SaveData(LPSTR args) {
+void QuaEquation(float a, float b, float c) {
 
+	HANDLE hFile = CreateFile(PATH,
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
 
+	char answer_text[300];
+	DWORD bytes;
+	int size = 0;
 
+	float x1, x2, discriminant;
+	discriminant = powf(b, 2.0) - 4 * a * c;
+	if (discriminant <0 || a == 0) {
+
+		WriteFile(hFile, "Решения нет", 11, &bytes, NULL);
+		return 1;
+
+	}
+
+	if (discriminant == 0) {
+
+		x1 = (-b) / (2 * a);
+		sprintf(answer_text, "Дискриминант равен %f\nx1 = %f", discriminant, x1);
+		while (answer_text[size] != 0) {
+
+			size++;
+
+		}
+
+		WriteFile(hFile, answer_text, size, &bytes, NULL);
+
+	}
+	if (discriminant > 0) {
+
+		x1 = ((-b) - sqrt(discriminant) / (2 * a));
+		x2 = ((-b) + sqrt(discriminant) / (2 * a));
+
+		sprintf(answer_text, "Дискриминант равен %f\nx1 = %f\nx2 = %f");
+		while (answer_text[size] != 0) {
+
+			size++;
+		}
+		WriteFile(hFile, answer_text, size, &bytes, NULL);
+
+	}
 
 }
