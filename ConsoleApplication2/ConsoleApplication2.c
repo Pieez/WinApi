@@ -56,7 +56,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 	QuaEquation(a, b, c);
 }
 
-void QuaEquation(float a, float b, float c) {
+void QuaEquation(float a, float b , float c) {
 
 	HANDLE hFile = CreateFile(PATH,
 		GENERIC_READ | GENERIC_WRITE,
